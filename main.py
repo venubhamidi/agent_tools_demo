@@ -72,12 +72,12 @@ def search_products_v1(query: str, category: str = "") -> str:
 # def search_products_v3(query: str, category: str = "", in_stock: bool = None) -> str:
 #     """
 #     Search for products in the v3 database with inventory filtering (newer version).
-#     
+    
 #     Args:
 #         query: The search query for products (e.g., 'laptop', 'chair')
 #         category: Product category - 'electronics', 'furniture', or empty string for all categories
 #         in_stock: Filter by inventory status - True for in-stock only, False for out-of-stock only, None for all products
-#     
+    
 #     Returns:
 #         JSON string with search results from v3 API
 #     """
@@ -87,26 +87,26 @@ def search_products_v1(query: str, category: str = "") -> str:
 #             "query": query,
 #             "category": category
 #         }
-#         
+        
 #         # Only add in_stock parameter if explicitly provided
 #         if in_stock is not None:
 #             payload["in_stock"] = in_stock
-#         
+        
 #         print(f"\n📞 Calling v3 API: query='{query}', category='{category}', in_stock={in_stock}")
-#         
+        
 #         response = requests.post(
 #             url,
 #             headers={"Content-Type": "application/json"},
 #             json=payload,
 #             timeout=10
 #         )
-#         
+        
 #         if response.status_code == 200:
 #             data = response.json()
 #             return json.dumps(data, indent=2)
 #         else:
 #             return f"Error: API v3 returned status code {response.status_code}"
-#             
+            
 #     except Exception as e:
 #         return f"Error calling API v3: {str(e)}"
 
@@ -117,7 +117,8 @@ def create_agent():
     # Initialize the LLM (Claude)
     llm = ChatAnthropic(
         model="claude-sonnet-4-20250514",
-        temperature=0
+        temperature=0,
+        api_key=os.environ.get("ANTHROPIC_API_KEY")
     )
     
     # ========================================================================
@@ -125,7 +126,7 @@ def create_agent():
     # ========================================================================
     tools = [
         search_products_v1,
-        # search_products_v3,  # <-- UNCOMMENT THIS LINE FOR PART 2
+        search_products_v3,  # <-- UNCOMMENT THIS LINE FOR PART 2
     ]
     
     # Create prompt template
